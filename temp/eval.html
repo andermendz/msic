@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Desempeño</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const performanceData = [
+                {
+                    name: 'María González',
+                    department: 'Tecnología',
+                    role: 'Desarrolladora Senior',
+                    currentPeriod: '2024-Q1',
+                    overallScore: 89,
+                    keyIndicators: [
+                        { name: 'Productividad', score: 92, trend: 'up' },
+                        { name: 'Calidad de Código', score: 87, trend: 'stable' },
+                        { name: 'Trabajo en Equipo', score: 85, trend: 'up' }
+                    ],
+                    historicalPerformance: [
+                        { period: '2023-Q3', score: 85 },
+                        { period: '2023-Q4', score: 87 },
+                        { period: '2024-Q1', score: 89 }
+                    ],
+                    competencyDevelopment: [
+                        { skill: 'Arquitectura de Software', level: 'Avanzado', progress: 75 },
+                        { skill: 'Liderazgo Técnico', level: 'Intermedio', progress: 60 }
+                    ]
+                },
+                {
+                    name: 'Carlos Rodríguez',
+                    department: 'Ventas',
+                    role: 'Gerente de Cuentas',
+                    currentPeriod: '2024-Q1',
+                    overallScore: 85,
+                    keyIndicators: [
+                        { name: 'Ventas Totales', score: 88, trend: 'up' },
+                        { name: 'Satisfacción de Clientes', score: 83, trend: 'stable' },
+                        { name: 'Desarrollo de Negocio', score: 82, trend: 'up' }
+                    ],
+                    historicalPerformance: [
+                        { period: '2023-Q3', score: 82 },
+                        { period: '2023-Q4', score: 84 },
+                        { period: '2024-Q1', score: 85 }
+                    ],
+                    competencyDevelopment: [
+                        { skill: 'Negociación Estratégica', level: 'Avanzado', progress: 70 },
+                        { skill: 'Gestión de Relaciones', level: 'Intermedio', progress: 65 }
+                    ]
+                }
+            ];
+
+            const performanceContainer = document.getElementById('performance-container');
+            const performanceChartCanvas = document.getElementById('performanceChart');
+
+            // Render Performance Cards
+            performanceData.forEach(employee => {
+                const performanceElement = document.createElement('div');
+                performanceElement.className = `bg-white shadow-md rounded-lg p-4 mb-4 hover:shadow-lg transition-shadow`;
+                performanceElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="font-semibold text-lg">${employee.name}</h3>
+                            <p class="text-sm text-gray-600">${employee.role} - ${employee.department}</p>
+                        </div>
+                        <span class="px-3 py-1 ${employee.overallScore >= 85 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'} rounded-full text-sm">
+                            Puntuación: ${employee.overallScore}
+                        </span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Indicadores Clave</h4>
+                        <div class="grid grid-cols-3 gap-2">
+                            ${employee.keyIndicators.map(indicator => `
+                                <div class="bg-gray-50 p-2 rounded-lg text-center">
+                                    <p class="text-xs font-medium text-gray-600">${indicator.name}</p>
+                                    <div class="flex justify-center items-center">
+                                        <span class="text-sm font-semibold">${indicator.score}</span>
+                                        <span class="ml-1 ${indicator.trend === 'up' ? 'text-green-500' : indicator.trend === 'down' ? 'text-red-500' : 'text-gray-500'}">
+                                            ${indicator.trend === 'up' ? '↑' : indicator.trend === 'down' ? '↓' : '→'}
+                                        </span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Desarrollo de Competencias</h4>
+                        ${employee.competencyDevelopment.map(comp => `
+                            <div class="mb-2">
+                                <div class="flex justify-between text-xs text-gray-600 mb-1">
+                                    <span>${comp.skill}</span>
+                                    <span>${comp.level} - ${comp.progress}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: ${comp.progress}%"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                performanceContainer.appendChild(performanceElement);
+            });
+
+            // Performance Trend Chart
+            new Chart(performanceChartCanvas, {
+                type: 'line',
+                data: {
+                    labels: ['Q3 2023', 'Q4 2023', 'Q1 2024'],
+                    datasets: performanceData.map((employee, index) => ({
+                        label: employee.name,
+                        data: employee.historicalPerformance.map(p => p.score),
+                        borderColor: index === 0 ? 'rgb(75, 192, 192)' : 'rgb(54, 162, 235)',
+                        tension: 0.1
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolución del Desempeño'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto px-4 py-6">
+        <header class="mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Evaluación de Desempeño</h1>
+                <p class="text-gray-600">Indicadores, Progreso y Desarrollo</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Buscar empleado..." class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <svg class="w-5 h-5 absolute right-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors">
+                    Nueva Evaluación
+                </button>
+            </div>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <section>
+                <h2 class="text-xl font-semibold mb-4">Evaluaciones Individuales</h2>
+                <div id="performance-container" class="space-y-4">
+                    <!-- Performance cards will be dynamically generated -->
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold mb-4">Tendencia de Desempeño</h2>
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

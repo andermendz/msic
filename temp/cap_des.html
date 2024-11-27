@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacitación y Desarrollo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const employeesData = [
+                {
+                    name: 'María González',
+                    department: 'Tecnología',
+                    role: 'Desarrolladora Senior',
+                    completedCourses: 5,
+                    inProgressCourses: 2,
+                    certifications: ['AWS Certified', 'Scrum Master'],
+                    recommendedCourses: [
+                        { 
+                            title: 'Machine Learning Avanzado', 
+                            provider: 'Coursera', 
+                            relevance: 90,
+                            duration: '8 semanas'
+                        }
+                    ]
+                },
+                {
+                    name: 'Carlos Rodríguez',
+                    department: 'Ventas',
+                    role: 'Gerente de Cuentas',
+                    completedCourses: 3,
+                    inProgressCourses: 1,
+                    certifications: ['Ventas Consultivas'],
+                    recommendedCourses: [
+                        { 
+                            title: 'Liderazgo Estratégico', 
+                            provider: 'LinkedIn Learning', 
+                            relevance: 85,
+                            duration: '6 semanas'
+                        }
+                    ]
+                },
+                {
+                    name: 'Ana Martínez',
+                    department: 'Recursos Humanos',
+                    role: 'Especialista en Desarrollo',
+                    completedCourses: 4,
+                    inProgressCourses: 3,
+                    certifications: ['Gestión del Talento', 'Psicología Organizacional'],
+                    recommendedCourses: [
+                        { 
+                            title: 'Transformación Digital en RH', 
+                            provider: 'edX', 
+                            relevance: 95,
+                            duration: '10 semanas'
+                        }
+                    ]
+                }
+            ];
+
+            const availableCourses = [
+                { 
+                    title: 'Machine Learning Avanzado', 
+                    category: 'Tecnología',
+                    level: 'Avanzado',
+                    duration: '8 semanas',
+                    seats: 15,
+                    price: '$499'
+                },
+                { 
+                    title: 'Liderazgo Estratégico', 
+                    category: 'Gestión',
+                    level: 'Intermedio',
+                    duration: '6 semanas',
+                    seats: 20,
+                    price: '$349'
+                },
+                { 
+                    title: 'Transformación Digital', 
+                    category: 'Estrategia',
+                    level: 'Intermedio',
+                    duration: '10 semanas',
+                    seats: 25,
+                    price: '$599'
+                }
+            ];
+
+            const employeesContainer = document.getElementById('employees-container');
+            const coursesContainer = document.getElementById('courses-container');
+
+            // Renderizar empleados
+            employeesData.forEach(employee => {
+                const employeeElement = document.createElement('div');
+                employeeElement.className = `bg-white shadow-md rounded-lg p-4 mb-4 hover:shadow-lg transition-shadow`;
+                employeeElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="font-semibold text-lg">${employee.name}</h3>
+                            <p class="text-sm text-gray-600">${employee.role} - ${employee.department}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                                Completados: ${employee.completedCourses}
+                            </span>
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
+                                En Progreso: ${employee.inProgressCourses}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Certificaciones</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${employee.certifications.map(cert => `
+                                <span class="px-2 py-1 bg-blue-50 text-blue-800 rounded-full text-xs">
+                                    ${cert}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Cursos Recomendados</h4>
+                        ${employee.recommendedCourses.map(course => `
+                            <div class="flex justify-between items-center mb-2">
+                                <div>
+                                    <p class="font-semibold text-sm">${course.title}</p>
+                                    <p class="text-xs text-gray-500">${course.provider}</p>
+                                </div>
+                                <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">
+                                    Relevancia: ${course.relevance}%
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                employeesContainer.appendChild(employeeElement);
+            });
+
+            // Renderizar cursos disponibles
+            availableCourses.forEach(course => {
+                const courseElement = document.createElement('div');
+                courseElement.className = `bg-white shadow-md rounded-lg p-4 mb-4 hover:shadow-lg transition-colors`;
+                courseElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="font-semibold text-lg">${course.title}</h3>
+                            <p class="text-sm text-gray-600">${course.category} - ${course.level}</p>
+                        </div>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                            ${course.seats} Cupos
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-600">
+                            <p>Duración: ${course.duration}</p>
+                            <p>Precio: ${course.price}</p>
+                        </div>
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors">
+                            Inscribirse
+                        </button>
+                    </div>
+                `;
+                coursesContainer.appendChild(courseElement);
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto px-4 py-6">
+        <header class="mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Capacitación y Desarrollo</h1>
+                <p class="text-gray-600">Planes de Formación y Certificaciones</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Buscar curso o empleado..." class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <svg class="w-5 h-5 absolute right-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors">
+                    Nuevo Plan de Formación
+                </button>
+            </div>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <section>
+                <h2 class="text-xl font-semibold mb-4">Desarrollo de Empleados</h2>
+                <div id="employees-container" class="space-y-4">
+                    <!-- Empleados se generarán dinámicamente -->
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold mb-4">Cursos Disponibles</h2>
+                <div id="courses-container" class="space-y-4">
+                    <!-- Cursos se generarán dinámicamente -->
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

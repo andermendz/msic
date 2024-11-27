@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Candidatos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const candidatesData = [
+                { 
+                    name: 'María González', 
+                    position: 'Desarrollador Senior', 
+                    stage: 'Entrevista Técnica',
+                    skills: ['Python', 'React', 'Machine Learning'],
+                    score: 85,
+                    status: 'positivo'
+                },
+                { 
+                    name: 'Carlos Rodríguez', 
+                    position: 'Analista de Datos', 
+                    stage: 'Revisión de CV',
+                    skills: ['SQL', 'Power BI', 'R'],
+                    score: 72,
+                    status: 'pendiente'
+                },
+                { 
+                    name: 'Ana Martínez', 
+                    position: 'Gerente de Proyectos', 
+                    stage: 'Entrevista Final',
+                    skills: ['Scrum', 'Liderazgo', 'Gestión de Equipos'],
+                    score: 90,
+                    status: 'positivo'
+                },
+                { 
+                    name: 'Luis Fernández', 
+                    position: 'Diseñador UX', 
+                    stage: 'Evaluación de Portafolio',
+                    skills: ['Figma', 'Design Thinking', 'Adobe XD'],
+                    score: 78,
+                    status: 'pendiente'
+                }
+            ];
+
+            const candidatesContainer = document.getElementById('candidates-container');
+            const skillsFilterContainer = document.getElementById('skills-filter');
+
+            // Generar lista de habilidades únicas para filtros
+            const allSkills = [...new Set(candidatesData.flatMap(candidate => candidate.skills))];
+            allSkills.forEach(skill => {
+                const skillButton = document.createElement('button');
+                skillButton.className = 'px-3 py-1 text-sm border rounded-full mr-2 mb-2 hover:bg-blue-100 hover:border-blue-300 transition-colors';
+                skillButton.textContent = skill;
+                skillButton.addEventListener('click', () => {
+                    skillButton.classList.toggle('bg-blue-200');
+                    filterCandidates();
+                });
+                skillsFilterContainer.appendChild(skillButton);
+            });
+
+            function filterCandidates() {
+                const selectedSkills = Array.from(document.querySelectorAll('#skills-filter button.bg-blue-200'))
+                    .map(btn => btn.textContent);
+
+                candidatesContainer.innerHTML = '';
+                candidatesData
+                    .filter(candidate => 
+                        selectedSkills.length === 0 || 
+                        selectedSkills.some(skill => candidate.skills.includes(skill))
+                    )
+                    .forEach(candidate => {
+                        const candidateElement = document.createElement('div');
+                        candidateElement.className = `bg-white shadow-md rounded-lg p-4 mb-4 hover:shadow-lg transition-shadow`;
+                        candidateElement.innerHTML = `
+                            <div class="flex justify-between items-center mb-3">
+                                <div>
+                                    <h3 class="font-semibold text-lg">${candidate.name}</h3>
+                                    <p class="text-sm text-gray-600">${candidate.position}</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-sm ${
+                                    candidate.status === 'positivo' 
+                                    ? 'bg-green-100 text-green-800' 
+                                    : 'bg-yellow-100 text-yellow-800'
+                                }">
+                                    ${candidate.stage}
+                                </span>
+                            </div>
+                            <div class="mb-3">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Habilidades</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    ${candidate.skills.map(skill => `
+                                        <span class="px-2 py-1 bg-blue-50 text-blue-800 rounded-full text-xs">
+                                            ${skill}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 mr-3">
+                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${candidate.score}%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-600">${candidate.score}%</span>
+                            </div>
+                        `;
+                        candidatesContainer.appendChild(candidateElement);
+                    });
+            }
+
+            // Inicializar vista
+            filterCandidates();
+        });
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto px-4 py-6">
+        <header class="mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Gestión de Candidatos</h1>
+                <p class="text-gray-600">Seguimiento de Procesos de Reclutamiento</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Buscar candidato..." class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <svg class="w-5 h-5 absolute right-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors">
+                    Nuevo Candidato
+                </button>
+            </div>
+        </header>
+
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-4">Filtrar por Habilidades</h2>
+            <div id="skills-filter" class="flex flex-wrap">
+                <!-- Filtros de habilidades se generarán dinámicamente -->
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <section class="md:col-span-2">
+                <h2 class="text-xl font-semibold mb-4">Candidatos</h2>
+                <div id="candidates-container" class="space-y-4">
+                    <!-- Candidatos se generarán dinámicamente -->
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

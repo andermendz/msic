@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control HCM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Datos más detallados y variados
+        document.addEventListener('DOMContentLoaded', () => {
+            const statsData = [
+                { icon: '👥', title: 'Total Empleados', value: '256', change: '+3%' },
+                { icon: '🔍', title: 'Vacantes Abiertas', value: '18', change: '+2' },
+                { icon: '📈', title: 'Tasa de Retención', value: '92%', change: '+5%' },
+                { icon: '🏆', title: 'Promociones', value: '12', change: '+4' }
+            ];
+
+            const recruitmentData = [
+                { 
+                    position: 'Desarrollador Senior', 
+                    status: 'En Proceso', 
+                    candidates: 7, 
+                    lastUpdated: 'Hace 2 horas',
+                    progress: 65
+                },
+                { 
+                    position: 'Gerente de Producto', 
+                    status: 'Entrevistas', 
+                    candidates: 3, 
+                    lastUpdated: 'Hace 4 horas',
+                    progress: 45
+                },
+                { 
+                    position: 'Analista de Datos', 
+                    status: 'Revisión de CV', 
+                    candidates: 12, 
+                    lastUpdated: 'Hace 1 hora',
+                    progress: 30
+                }
+            ];
+
+            const trainingData = [
+                { 
+                    course: 'Liderazgo Estratégico', 
+                    participants: '24/30', 
+                    progress: 80,
+                    deadline: '15 Dic 2024'
+                },
+                { 
+                    course: 'Transformación Digital', 
+                    participants: '18/25', 
+                    progress: 72,
+                    deadline: '22 Dic 2024'
+                }
+            ];
+
+            const statsContainer = document.getElementById('stats-container');
+            const recruitmentContainer = document.getElementById('recruitment-container');
+            const trainingContainer = document.getElementById('training-container');
+
+            // Renderizar tarjetas estadísticas
+            statsData.forEach(stat => {
+                const statElement = document.createElement('div');
+                statElement.className = `bg-white shadow-md rounded-lg p-4 flex items-center space-x-4 hover:shadow-lg transition-shadow`;
+                statElement.innerHTML = `
+                    <div class="text-3xl">${stat.icon}</div>
+                    <div>
+                        <h3 class="text-sm text-gray-500">${stat.title}</h3>
+                        <div class="flex items-center">
+                            <span class="text-xl font-bold mr-2">${stat.value}</span>
+                            <span class="text-sm ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}">
+                                ${stat.change}
+                            </span>
+                        </div>
+                    </div>
+                `;
+                statsContainer.appendChild(statElement);
+            });
+
+            // Renderizar procesos de reclutamiento
+            recruitmentData.forEach(item => {
+                const recruitmentElement = document.createElement('div');
+                recruitmentElement.className = `bg-white shadow-md rounded-lg p-4 mb-3`;
+                recruitmentElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-semibold">${item.position}</h3>
+                        <span class="text-sm text-blue-600">${item.status}</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-500">Candidatos: ${item.candidates}</span>
+                        <span class="text-xs text-gray-400">${item.lastUpdated}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${item.progress}%"></div>
+                    </div>
+                `;
+                recruitmentContainer.appendChild(recruitmentElement);
+            });
+
+            // Renderizar capacitaciones
+            trainingData.forEach(item => {
+                const trainingElement = document.createElement('div');
+                trainingElement.className = `bg-white shadow-md rounded-lg p-4 mb-3`;
+                trainingElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-semibold">${item.course}</h3>
+                        <span class="text-sm text-green-600">Inscripción: ${item.participants}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                        <div class="bg-green-600 h-2.5 rounded-full" style="width: ${item.progress}%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-500">
+                        <span>Progreso</span>
+                        <span>Fecha límite: ${item.deadline}</span>
+                    </div>
+                `;
+                trainingContainer.appendChild(trainingElement);
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto px-4 py-6">
+        <header class="mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Panel de Control HCM</h1>
+                <p class="text-gray-600">Sistema de Gestión de Talento Humano</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Buscar..." class="bg-white border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <svg class="w-5 h-5 absolute right-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <div class="bg-blue-100 text-blue-800 p-2 rounded-full">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div id="stats-container" class="md:col-span-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Estadísticas se generarán dinámicamente -->
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <section>
+                <h2 class="text-xl font-semibold mb-4">Procesos de Reclutamiento</h2>
+                <div id="recruitment-container" class="space-y-3">
+                    <!-- Procesos de reclutamiento se generarán dinámicamente -->
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold mb-4">Capacitaciones en Curso</h2>
+                <div id="training-container" class="space-y-3">
+                    <!-- Capacitaciones se generarán dinámicamente -->
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

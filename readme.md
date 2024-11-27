@@ -1,1 +1,0 @@
-Boilerplate code for vanilla apps using HTML, CSS and Javascript
